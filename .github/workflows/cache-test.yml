@@ -1,0 +1,27 @@
+name: Cache Test
+
+on: [push]  # Triggers on any push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Node.js  # Example setup (skip if not Node)
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+    
+    - name: Prime cache  # REQUIRED: Exact name from assignment
+      uses: actions/cache@v4
+      with:
+        key: cache-a4e4486  # REQUIRED: Exact fixed key
+        path: ~/.npm  # Cache npm deps (or use node_modules/ for your project)
+        restore-keys: |
+          cache-a4e4486-
+    
+    - name: Install deps  # Echo shows hit/miss automatically
+      run: npm ci  # Or your install command (e.g., pip install -r requirements.txt)
